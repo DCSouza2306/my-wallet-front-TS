@@ -1,7 +1,47 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { SyntheticEvent, useState, useEffect } from "react";
+import axios, { AxiosError } from "axios";
+import { URL_BASE } from "../constants/constansts";
 
 export default function LoginPage() {
+ const [email, setEmail] = useState("");
+ const [password, setPassword] = useState("");
+ const [enable, setEnable] = useState(false);
+ const userStorage = localStorage.getItem("authValidation");
+ const navigate = useNavigate();
+
+ useEffect(() => {
+  if (userStorage) {
+   navigate("/home");
+  }
+ }, [enable]);
+
+ function loginUser(e: SyntheticEvent) {
+  e.preventDefault();
+  setEnable(true);
+  const user = {
+   email,
+   password,
+  };
+
+  axios
+   .post(`${URL_BASE}/auth`, user)
+   .then((res) => {
+    localStorage.setItem("authValidation", JSON.stringify(res.data));
+    navigate("/home");
+   })
+   .catch((err: Error | AxiosError) => {
+    if (axios.isAxiosError(err)) {
+     alert(err.response?.data.message);
+     console.log(err);
+     setEnable(false);
+    } else {
+     alert(err.message);
+    }
+   });
+ }
+
  return (
   <LoginAndSignUpSection>
    <div className="left-div">
@@ -10,10 +50,26 @@ export default function LoginPage() {
    </div>
 
    <div className="right-div">
-    <form>
-     <input type="email" placeholder="email" required />
-     <input type="password" placeholder="senha" required />
-     <button className="button-login">Entrar</button>
+    <form onSubmit={loginUser}>
+     <input
+      type="email"
+      placeholder="email"
+      disabled={enable}
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      required
+     />
+     <input
+      type="password"
+      placeholder="senha"
+      disabled={enable}
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+      required
+     />
+     <button type="submit" className="button-login">
+      Entrar
+     </button>
     </form>
     <Link to="/sign-up">
      <button className="button-redirect">
@@ -28,7 +84,7 @@ export default function LoginPage() {
 export const LoginAndSignUpSection = styled.section`
  background-color: #d199da;
  height: 100vh;
- background-image: linear-gradient(to bottom, #220926, rgba(102, 24, 181, 0.4));
+ background-image: linear-gradient(180deg, #220926, rgba(102, 24, 181, 0.5));
  display: flex;
  .left-div {
   color: #ffffff;
@@ -64,6 +120,10 @@ export const LoginAndSignUpSection = styled.section`
     font-family: "Raleway", sans-serif;
     font-size: 20px;
     color: #3d3c3c;
+    :focus {
+     box-shadow: 0 0 0 0;
+     outline: 0;
+    }
    }
    .button-login {
     width: 429px;

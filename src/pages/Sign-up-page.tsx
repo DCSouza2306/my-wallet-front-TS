@@ -1,6 +1,6 @@
 import { LoginAndSignUpSection } from "./Login-page";
 import { Link, useNavigate } from "react-router-dom";
-import { ErrorInfo, SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import axios, { AxiosError } from "axios";
 import { URL_BASE } from "../constants/constansts";
 
