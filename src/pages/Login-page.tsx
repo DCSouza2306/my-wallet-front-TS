@@ -25,7 +25,7 @@ export default function LoginPage() {
  );
 }
 
-const LoginAndSignUpSection = styled.section`
+export const LoginAndSignUpSection = styled.section`
  background-color: #d199da;
  height: 100vh;
  background-image: linear-gradient(to bottom, #220926, rgba(102, 24, 181, 0.4));
