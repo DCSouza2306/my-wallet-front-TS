@@ -1,25 +1,17 @@
 import styled from "styled-components";
 import IonIcon from '@reacticons/ionicons';
+import userData from "../constants/user-storage";
 
 
 export default function Header() {
- const userStorage = localStorage.getItem("authValidation");
- let userJson = {
-  name: "",
-  url_image: "",
-  token: "",
- };
- if (userStorage) {
-  userJson = JSON.parse(userStorage);
- }
-
+  const user = userData()
  return (
   <HeaderDiv>
    <h1>My Wallet</h1>
    <div className="user-settings">
-    <img src={`${userJson.url_image}`} alt="user logo" />
+    <img src={`${user.url_image}`} alt="user logo" />
     <>
-     <p className="user-settings-name">Olá, {userJson.name}</p>
+     <p className="user-settings-name">Olá, {user.name}</p>
      <IonIcon className="user-chevron" name="chevron-down-outline"></IonIcon>
     </>
    </div>
