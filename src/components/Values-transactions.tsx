@@ -1,14 +1,53 @@
 import styled from "styled-components";
 import IonIcon from "@reacticons/ionicons";
+import axios, { AxiosError } from "axios";
+import { URL_BASE } from "../constants/constansts";
+import userData from "../constants/user-storage";
+import { RefreshContext } from "../providers/refresh";
+import React from "react";
 
-export default function TransactionsValues() {
+interface Props {
+ readonly transaction: {
+  id: string;
+  value: number;
+  description: string;
+  type: string;
+  dateTransaction: string;
+ };
+}
+
+export default function TransactionsValues(props: Props) {
+ const { setRefresh, refresh } = React.useContext(RefreshContext);
+ const { id, value, description, dateTransaction } = props.transaction;
+ const user = userData();
+
+ function deleteTransaction() {
+  axios
+   .delete(`${URL_BASE}/transactions/${id}`, {
+    headers: { Authorization: `Bearer ${user.token}` },
+   })
+   .then((res) => {
+    setRefresh(!refresh);
+   })
+   .catch((e: AxiosError | Error) => {
+    if (axios.isAxiosError(e)) {
+     console.log(e);
+    } else {
+     console.log(e);
+    }
+   });
+ }
  return (
   <ValuesTransactionsDiv>
-   <p className="date">01/02/2023</p>
-   <p className="description">Salário</p>
-   <p className="value">R$ 3000,00</p>
+   <p className="date">{dateTransaction.substring(0, 10)}</p>
+   <p className="description">{description}</p>
+   <p className="value">R$ {value.toFixed(2)}</p>
    <div className="buttons-edit-delete">
-    <IonIcon className="delete-button" name="trash-outline"></IonIcon>
+    <IonIcon
+     className="delete-button"
+     name="trash-outline"
+     onClick={() => deleteTransaction()}
+    ></IonIcon>
     <IonIcon className="edit-button" name="create-outline"></IonIcon>
    </div>
   </ValuesTransactionsDiv>
@@ -21,13 +60,19 @@ const ValuesTransactionsDiv = styled.div`
  font-size: 18px;
  .date {
   width: 250px;
-  padding-left: 40px;
+  display: flex;
+  align-items: flex-start;
+  padding-left: 30px;
  }
  .description {
   width: 400px;
+  display: flex;
+  align-items: flex-start;
  }
  .value {
   width: 150px;
+  display: flex;
+  align-items: flex-start;
  }
  .buttons-edit-delete {
   width: 50px;

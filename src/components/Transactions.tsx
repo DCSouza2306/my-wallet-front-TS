@@ -4,6 +4,13 @@ import TransactionsValues from "./Values-transactions";
 interface Props {
  readonly inputMonth: string;
  readonly setInputhMonth: (arg0: string) => void;
+ readonly transactions: {
+  id: string;
+  value: number;
+  description: string;
+  type: string;
+  dateTransaction: string;
+ }[];
 }
 
 export default function Transacions(props: Props) {
@@ -20,12 +27,19 @@ export default function Transacions(props: Props) {
     <p>Descrição</p>
     <p>Valor</p>
    </div>
-   <div className="values-transactions" >
-    <TransactionsValues />
-    <TransactionsValues />
-    <TransactionsValues />
-    <TransactionsValues />
-    <TransactionsValues />
+   <div className="values-transactions">
+    {props.inputMonth.length === 0 ? (
+     <p>Selecione um mês</p>
+    ) : props.transactions.length === 0 ? (
+     <p>Não há lançamentos para esse período</p>
+    ) : (
+     props.transactions.map((e,i) => (
+      <TransactionsValues
+       transaction={e}
+       key={i}
+      />
+     ))
+    )}
    </div>
   </TransactionsDiv>
  );
@@ -51,18 +65,22 @@ const TransactionsDiv = styled.div`
    outline: 0;
   }
  }
- .header-transactions{
-    display: flex;
-    width: 670px;
-    margin: 25px 180px 15px auto;
-    justify-content: space-between;
-    font-weight: 700;
-    font-size: 20px;
+ .header-transactions {
+  display: flex;
+  width: 670px;
+  margin: 25px 180px 15px auto;
+  justify-content: space-between;
+  font-weight: 700;
+  font-size: 20px;
  }
- .values-transactions{
-    width: 880px;
-    border-top: 2px solid #6618B5;
-    margin: 0 auto;
-    padding-top: 20px;
+ .values-transactions {
+  width: 880px;
+  border-top: 2px solid #6618b5;
+  margin: 0 auto;
+  padding-top: 20px;
+  p {
+   font-size: 24px;
+   text-align: center;
+  }
  }
 `;
