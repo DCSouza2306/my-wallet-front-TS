@@ -9,9 +9,11 @@ import axios, { AxiosError } from "axios";
 import { URL_BASE } from "../constants/constansts";
 import userData from "../constants/user-storage";
 import { RefreshContext } from "../providers/refresh";
+import CustomModal from "../components/Modal";
+import Modal from "react-modal"
 
 export default function HomePage() {
- const { refresh } = React.useContext(RefreshContext);
+ const { refresh, isOpen, setIsOpen } = React.useContext(RefreshContext);
  const [inputMonth, setInputMonth] = useState("");
  const [transactions, setTransactions] = useState([
   {
@@ -29,6 +31,16 @@ export default function HomePage() {
  const config = {
   headers: { Authorization: `Bearer ${token}` },
  };
+
+
+
+ function openModal() {
+  setIsOpen(true);
+ }
+
+ function closeModal() {
+  setIsOpen(true);
+ }
  useEffect(() => {
   if (inputMonth.length > 0) {
    const splited = inputMonth.split("-");
@@ -53,6 +65,11 @@ export default function HomePage() {
  return (
   <HomeSection>
    <Header />
+   {isOpen ? (<CustomModal
+    isOpen={isOpen}
+    onRequestClose={closeModal}
+   />): null}
+   
    <div className="transactions">
     <div className="left-side-transactions">
      <TotalValues type="total-income" transactions={transactions} />

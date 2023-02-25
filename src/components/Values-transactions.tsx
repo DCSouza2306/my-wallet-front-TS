@@ -17,9 +17,16 @@ interface Props {
 }
 
 export default function TransactionsValues(props: Props) {
- const { setRefresh, refresh } = React.useContext(RefreshContext);
+ const { setRefresh, refresh, isOpen, setIsOpen, setTransaction } =
+  React.useContext(RefreshContext);
  const { id, value, description, dateTransaction } = props.transaction;
+
  const user = userData();
+
+ function openModal() {
+  setIsOpen(true);
+  setTransaction(props.transaction)
+ }
 
  function deleteTransaction() {
   axios
@@ -39,7 +46,7 @@ export default function TransactionsValues(props: Props) {
  }
  return (
   <ValuesTransactionsDiv>
-   <p className="date">{dateTransaction.substring(0, 10)}</p>
+   <p className="date">{dateTransaction.substring(0,10)}</p>
    <p className="description">{description}</p>
    <p className="value">R$ {value.toFixed(2)}</p>
    <div className="buttons-edit-delete">
@@ -48,7 +55,11 @@ export default function TransactionsValues(props: Props) {
      name="trash-outline"
      onClick={() => deleteTransaction()}
     ></IonIcon>
-    <IonIcon className="edit-button" name="create-outline"></IonIcon>
+    <IonIcon
+     onClick={() => openModal()}
+     className="edit-button"
+     name="create-outline"
+    ></IonIcon>
    </div>
   </ValuesTransactionsDiv>
  );
