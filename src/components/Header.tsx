@@ -1,25 +1,36 @@
 import styled from "styled-components";
 import IonIcon from '@reacticons/ionicons';
 import userData from "../constants/user-storage";
+import { useState } from "react";
+import { transform } from "typescript";
+
+interface DisplayProps{
+  readonly displaySettings: boolean
+}
 
 
 export default function Header() {
-  const user = userData()
+  const user = userData();
+  const [isOpen, setIsOpen] = useState(true)
+  function openSettings(){
+    setIsOpen(!isOpen)
+  }
  return (
-  <HeaderDiv>
+  <HeaderDiv displaySettings={isOpen}>
    <h1>My Wallet</h1>
    <div className="user-settings">
     <img src={`${user.url_image}`} alt="user logo" />
     <>
      <p className="user-settings-name">Olá, {user.name}</p>
-     <IonIcon className="user-chevron" name="chevron-down-outline"></IonIcon>
+     <IonIcon onClick={() => openSettings()} className="user-chevron" name="chevron-down-outline"></IonIcon>
     </>
    </div>
+   <div className="settings-box"> teste</div>
   </HeaderDiv>
  );
 }
 
-const HeaderDiv = styled.div`
+const HeaderDiv = styled.div<DisplayProps>`
  padding: 0 25px;
  height: 80px;
  background-color: rgba(102, 24, 181, 0.5);
@@ -52,5 +63,18 @@ const HeaderDiv = styled.div`
         cursor: pointer;
     }
   }
+ }
+
+ .settings-box{
+  background-color: red;
+  width: 180px;
+  height: 100px;
+  position: fixed;
+  right: 0;
+  top: 80px;
+  border-radius: 0 0 0 20px;
+  transition: transform 1s;
+  transform: ${(props) => props.displaySettings ? "translate(180px)": "" };
+ 
  }
 `;
