@@ -11,7 +11,7 @@ interface PropsModal {
 }
 
 export default function CustomModal(props: PropsModal) {
- const { setIsOpen, transaction, setRefresh, refresh } =
+ const { setIsOpen, isOpen, transaction, setRefresh, refresh } =
   React.useContext(RefreshContext);
  const [value, setValue] = useState(transaction.value.toString());
  const [description, setDescription] = useState(transaction.description);
@@ -33,6 +33,7 @@ export default function CustomModal(props: PropsModal) {
  function handleEditModal() {
   setEnable(!enable);
  }
+
  function updateTransactions() {
   setEnable(!enable);
   axios
@@ -50,7 +51,7 @@ export default function CustomModal(props: PropsModal) {
    )
    .then((res) => {
     setIsOpen(false);
-    setRefresh(!refresh)
+    setRefresh(!refresh);
    })
    .catch((e: AxiosError | Error) => {
     if (axios.isAxiosError(e)) {
@@ -61,7 +62,7 @@ export default function CustomModal(props: PropsModal) {
    });
  }
  return (
-  <ModalDiv>
+  <ModalDiv id="modal-div">
    <div className="container-modal">
     <h2>Editar Transação</h2>
     <form>
@@ -169,8 +170,8 @@ const ModalDiv = styled.div`
   height: 400px;
   border-radius: 50px;
   position: fixed;
-  h2{
-    font-size: 28px;
+  h2 {
+   font-size: 28px;
   }
   form {
    display: flex;
@@ -238,8 +239,8 @@ const ModalDiv = styled.div`
     border-radius: 6px;
     background-color: #d199da;
     color: #ffffff;
-    :hover{
-      cursor: pointer;
+    :hover {
+     cursor: pointer;
     }
    }
   }

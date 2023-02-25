@@ -35,6 +35,7 @@ export default function TransactionsValues(props: Props) {
 
  function openModal() {
   setIsOpen(true);
+  setRefresh(!refresh)
   setTransaction(props.transaction);
  }
  function deleteTransaction() {
@@ -54,9 +55,7 @@ export default function TransactionsValues(props: Props) {
    });
  }
  return (
-  <ValuesTransactionsDiv
-   typeColor={type === "income" ? "#219A2D" : "#CC141F"}
-  >
+  <ValuesTransactionsDiv typeColor={type === "income" ? "#219A2D" : "#CC141F"}>
    <p className="date">{dateTransaction.substring(0, 10)}</p>
    <p className="description">{description}</p>
    <p className="value">R$ {value.toFixed(2)}</p>
@@ -95,7 +94,7 @@ const ValuesTransactionsDiv = styled.div<ColorProps>`
   width: 150px;
   display: flex;
   align-items: flex-start;
-  color: ${(props) => props.typeColor}
+  color: ${(props) => props.typeColor};
  }
  .buttons-edit-delete {
   width: 50px;

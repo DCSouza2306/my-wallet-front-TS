@@ -32,9 +32,8 @@ export default function HomePage() {
  const config = {
   headers: { Authorization: `Bearer ${token}` },
  };
- function openModal() {
-  setIsOpen(true);
- }
+
+
 
  function closeModal() {
   setIsOpen(true);

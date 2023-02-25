@@ -2,7 +2,6 @@ import styled from "styled-components";
 import IonIcon from '@reacticons/ionicons';
 import userData from "../constants/user-storage";
 import { useState } from "react";
-import { transform } from "typescript";
 
 interface DisplayProps{
   readonly displaySettings: boolean
@@ -11,12 +10,19 @@ interface DisplayProps{
 
 export default function Header() {
   const user = userData();
-  const [isOpen, setIsOpen] = useState(true)
+  const [isOpenSettings, setIsOpenSettings] = useState(false)
   function openSettings(){
-    setIsOpen(!isOpen)
+    document.onclick = () => {
+      setIsOpenSettings(!isOpenSettings);
+    };
+  }
+  if(isOpenSettings){
+    document.onclick = () => {
+      setIsOpenSettings(false);
+    };
   }
  return (
-  <HeaderDiv displaySettings={isOpen}>
+  <HeaderDiv displaySettings={isOpenSettings}>
    <h1>My Wallet</h1>
    <div className="user-settings">
     <img src={`${user.url_image}`} alt="user logo" />
@@ -74,7 +80,7 @@ const HeaderDiv = styled.div<DisplayProps>`
   top: 80px;
   border-radius: 0 0 0 20px;
   transition: transform 1s;
-  transform: ${(props) => props.displaySettings ? "translate(180px)": "" };
+  transform: ${(props) => props.displaySettings ? "": "translate(180px)" };
  
  }
 `;
