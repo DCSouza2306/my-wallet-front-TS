@@ -149,27 +149,24 @@ export default function CustomModal(props: PropsModal) {
 }
 
 const ModalDiv = styled.div`
- width: 100%;
- height: 100%;
- position: absolute;
- top: 0;
- left: 0;
  z-index: 10;
- background-color: rgb(83, 83, 83, 0.5);
- display: flex;
- justify-content: center;
- padding-top: 230px;
  font-family: "Raleway";
+ width: 700px;
+ height: 400px;
+ position: fixed;
+ top: 180px;
+ right:30%;
+ border-radius: 50px;
  .container-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  width: 700px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   border-radius: 50px;
-  position: fixed;
+
   h2 {
    font-size: 28px;
   }

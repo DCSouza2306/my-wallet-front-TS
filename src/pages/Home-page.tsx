@@ -12,10 +12,13 @@ import { RefreshContext } from "../providers/refresh";
 import CustomModal from "../components/Modal-edit";
 import CreateTransaction from "../components/Modal-create";
 import dayjs from "dayjs";
+import ScreenGray from "../components/Screen-faded";
 
 export default function HomePage() {
  const { refresh, isOpen, setIsOpen } = React.useContext(RefreshContext);
- const [inputMonth, setInputMonth] = useState(dayjs().toISOString().substring(0,7));
+ const [inputMonth, setInputMonth] = useState(
+  dayjs().toISOString().substring(0, 7)
+ );
  const [transactions, setTransactions] = useState([
   {
    id: "",
@@ -32,8 +35,6 @@ export default function HomePage() {
  const config = {
   headers: { Authorization: `Bearer ${token}` },
  };
-
-
 
  function closeModal() {
   setIsOpen(true);
@@ -61,9 +62,12 @@ export default function HomePage() {
 
  return (
   <HomeSection>
+   {isOpen ? <ScreenGray /> : null}
    <Header />
    {isOpen ? <CustomModal isOpen={isOpen} onRequestClose={closeModal} /> : null}
-   {openCreateTransaction ? <CreateTransaction setOpen={setIsOpenCreateTransaction}/> : null}
+   {openCreateTransaction ? (
+    <CreateTransaction setOpen={setIsOpenCreateTransaction} />
+   ) : null}
 
    <div className="transactions">
     <div className="left-side-transactions">
