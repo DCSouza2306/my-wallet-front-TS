@@ -5,13 +5,10 @@ import axios, { AxiosError } from "axios";
 import { URL_BASE } from "../constants/constansts";
 import userData from "../constants/user-storage";
 
-interface PropsModal {
- isOpen: boolean;
- onRequestClose: () => void;
-}
 
-export default function CustomModal(props: PropsModal) {
- const { setIsOpen, isOpen, transaction, setRefresh, refresh } =
+
+export default function CustomModal() {
+ const { setIsOpen, transaction, setRefresh, refresh } =
   React.useContext(RefreshContext);
  const [value, setValue] = useState(transaction.value.toString());
  const [description, setDescription] = useState(transaction.description);

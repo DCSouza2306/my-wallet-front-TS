@@ -5,15 +5,14 @@ import userData from "../constants/user-storage";
 import { RefreshContext } from "../providers/refresh";
 import { URL_BASE } from "../constants/constansts";
 
-interface Props {
- readonly setOpen: (arg0: boolean) => void;
-}
 
-export default function CreateTransaction(props: Props) {
+
+export default function CreateTransaction() {
  const {
   typeTransaction: type,
   setRefresh,
   refresh,
+  setIsOpenCreateTransaction
  } = React.useContext(RefreshContext);
  const [value, setValue] = useState("");
  const [description, setDescription] = useState("");
@@ -22,12 +21,12 @@ export default function CreateTransaction(props: Props) {
  const user = userData();
 
  function closeCreateModal() {
-  props.setOpen(false);
+setIsOpenCreateTransaction(false);
  }
 
- function newTransaction(e: SyntheticEvent) {
-  e.preventDefault();
+ function newTransaction() {
 
+  setEnable(true)
   const newTransaction = {
    value: parseInt(value),
    type: type === "Receita" ? "income" : "expense",
@@ -40,24 +39,25 @@ export default function CreateTransaction(props: Props) {
     headers: { Authorization: `Bearer ${user.token}` },
    })
    .then((res) => {
-    alert("foi");
-    props.setOpen(false);
+    setEnable(false)
     setRefresh(!refresh);
    })
    .catch((e: AxiosError | Error) => {
     if (axios.isAxiosError(e)) {
      console.log(e);
+     setEnable(false)
     } else {
      console.log(e);
+     setEnable(false)
     }
    });
  }
 
  return (
-  <CreateTransactionDiv>
+  <CreateTransactionDiv id="create-modal-div">
    <div className="create-transaction-modal">
     <h2>Inserir Nova {type}</h2>
-    <form onSubmit={newTransaction}>
+    <form>
      <div>
       <label htmlFor="value">Valor</label>
       <input
@@ -94,7 +94,7 @@ export default function CreateTransaction(props: Props) {
        />
       </div>
      </div>
-     <button type="submit">Salvar</button>
+     <button onClick={() => newTransaction()}>Salvar</button>
     </form>
 
     <button onClick={() => closeCreateModal()} className="button-close">
@@ -106,27 +106,23 @@ export default function CreateTransaction(props: Props) {
 }
 
 const CreateTransactionDiv = styled.div`
- width: 100%;
- height: 100%;
- position: absolute;
- top: 0;
- left: 0;
  z-index: 10;
- background-color: rgb(83, 83, 83, 0.5);
- display: flex;
- justify-content: center;
- padding-top: 230px;
  font-family: "Raleway";
+ width: 700px;
+ height: 400px;
+ position: fixed;
+ top: 180px;
+ right:30%;
+ border-radius: 50px;
  .create-transaction-modal {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background-color: #ffffff;
-  width: 700px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   border-radius: 50px;
-  position: fixed;
   h2 {
    font-size: 28px;
   }

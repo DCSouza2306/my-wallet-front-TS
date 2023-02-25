@@ -15,7 +15,8 @@ import dayjs from "dayjs";
 import ScreenGray from "../components/Screen-faded";
 
 export default function HomePage() {
- const { refresh, isOpen, setIsOpen } = React.useContext(RefreshContext);
+ const { refresh, isOpen, setIsOpen, openCreateTransaction } =
+  React.useContext(RefreshContext);
  const [inputMonth, setInputMonth] = useState(
   dayjs().toISOString().substring(0, 7)
  );
@@ -28,7 +29,6 @@ export default function HomePage() {
    dateTransaction: "",
   },
  ]);
- const [openCreateTransaction, setIsOpenCreateTransaction] = useState(false);
  const navigate = useNavigate();
  const user = userData();
  const token = user.token;
@@ -61,13 +61,12 @@ export default function HomePage() {
  }, [refresh, inputMonth]);
 
  return (
-  <HomeSection>
-   {isOpen ? <ScreenGray /> : null}
+  <HomeSection id="home">
+   {isOpen || openCreateTransaction ? <ScreenGray /> : null}
    <Header />
-   {isOpen ? <CustomModal isOpen={isOpen} onRequestClose={closeModal} /> : null}
-   {openCreateTransaction ? (
-    <CreateTransaction setOpen={setIsOpenCreateTransaction} />
-   ) : null}
+
+   {openCreateTransaction ? <CreateTransaction /> : null}
+   {isOpen ? <CustomModal /> : null}
 
    <div className="transactions">
     <div className="left-side-transactions">
@@ -82,16 +81,8 @@ export default function HomePage() {
       transactions={transactions}
      />
      <div className="buttons-transactions">
-      <ButtonsTransactions
-       type="income"
-       open={openCreateTransaction}
-       setOpen={setIsOpenCreateTransaction}
-      />
-      <ButtonsTransactions
-       type="expense"
-       open={openCreateTransaction}
-       setOpen={setIsOpenCreateTransaction}
-      />
+      <ButtonsTransactions type="income" />
+      <ButtonsTransactions type="expense" />
      </div>
     </div>
    </div>

@@ -7,8 +7,6 @@ import React from "react";
 
 interface Props {
  readonly type: string;
- readonly open: boolean;
- readonly setOpen: (arg0: boolean) => void
 }
 
 export default function ButtonsTransactions(props: Props) {
@@ -16,11 +14,12 @@ export default function ButtonsTransactions(props: Props) {
  const arrow =
   props.type === "income" ? "arrow-up-outline" : "arrow-down-outline";
  const user = userData();
- const { setRefresh, refresh, setTypeTransaction } = React.useContext(RefreshContext);
+ const { setTypeTransaction, setIsOpenCreateTransaction, openCreateTransaction, refresh, setRefresh } = React.useContext(RefreshContext);
 
  function newTransaction() {
-    props.setOpen(!props.open)
+    setIsOpenCreateTransaction(!openCreateTransaction)
     setTypeTransaction(type)
+    setRefresh(!refresh)
  }
  return (
   <ButtonsDiv onClick={() => newTransaction()}>
