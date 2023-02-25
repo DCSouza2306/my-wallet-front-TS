@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { RefreshContext } from "../providers/refresh";
 import React, { useState } from "react";
+import axios, { AxiosError } from "axios";
+import { URL_BASE } from "../constants/constansts";
+import userData from "../constants/user-storage";
 
 interface PropsModal {
  isOpen: boolean;
@@ -8,13 +11,15 @@ interface PropsModal {
 }
 
 export default function CustomModal(props: PropsModal) {
- const { setIsOpen, transaction } = React.useContext(RefreshContext);
+ const { setIsOpen, transaction, setRefresh, refresh } =
+  React.useContext(RefreshContext);
  const [value, setValue] = useState(transaction.value.toString());
  const [description, setDescription] = useState(transaction.description);
  const [type, setType] = useState(transaction.type);
  const [date, setDate] = useState(transaction.dateTransaction);
  const [checkbox, setCheckbox] = useState(true);
  const [enable, setEnable] = useState(true);
+ const user = userData();
 
  function handleCheckbox(typeTransaction: string) {
   setCheckbox(!checkbox);
@@ -28,9 +33,37 @@ export default function CustomModal(props: PropsModal) {
  function handleEditModal() {
   setEnable(!enable);
  }
+ function updateTransactions() {
+  setEnable(!enable);
+  axios
+   .put(
+    `${URL_BASE}/transactions/${transaction.id}`,
+    {
+     value: parseInt(value),
+     type,
+     description,
+     dateTransaction: date,
+    },
+    {
+     headers: { Authorization: `Bearer ${user.token}` },
+    }
+   )
+   .then((res) => {
+    setIsOpen(false);
+    setRefresh(!refresh)
+   })
+   .catch((e: AxiosError | Error) => {
+    if (axios.isAxiosError(e)) {
+     console.log(e);
+    } else {
+     console.log(e);
+    }
+   });
+ }
  return (
   <ModalDiv>
    <div className="container-modal">
+    <h2>Editar Transação</h2>
     <form>
      <div className="value-date-inputs">
       <div>
@@ -64,6 +97,7 @@ export default function CustomModal(props: PropsModal) {
         type="text"
         id="description"
         value={description}
+        onChange={(e) => setDescription(e.target.value)}
         disabled={enable}
         required
        />
@@ -98,7 +132,7 @@ export default function CustomModal(props: PropsModal) {
      <button hidden={!enable} onClick={() => handleEditModal()}>
       Editar
      </button>
-     <button hidden={enable} onClick={() => handleEditModal()}>
+     <button hidden={enable} onClick={() => updateTransactions()}>
       Salvar
      </button>
      <button hidden={enable} onClick={() => handleEditModal()}>
@@ -135,6 +169,9 @@ const ModalDiv = styled.div`
   height: 400px;
   border-radius: 50px;
   position: fixed;
+  h2{
+    font-size: 28px;
+  }
   form {
    display: flex;
    flex-direction: column;
@@ -148,6 +185,7 @@ const ModalDiv = styled.div`
    }
    input {
     border: 1px solid #6618b5;
+    border-radius: 5px;
     :focus {
      box-shadow: 0 0 0 0;
      outline: 0;
@@ -188,9 +226,9 @@ const ModalDiv = styled.div`
    }
   }
   .edit-save-modal {
-    width: 300px;
-    display: flex;
-    justify-content: space-evenly;
+   width: 300px;
+   display: flex;
+   justify-content: space-evenly;
    button {
     width: 120px;
     height: 30px;

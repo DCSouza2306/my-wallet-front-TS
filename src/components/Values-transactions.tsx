@@ -27,7 +27,6 @@ export default function TransactionsValues(props: Props) {
   setIsOpen(true);
   setTransaction(props.transaction)
  }
-
  function deleteTransaction() {
   axios
    .delete(`${URL_BASE}/transactions/${id}`, {

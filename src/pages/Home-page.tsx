@@ -9,12 +9,13 @@ import axios, { AxiosError } from "axios";
 import { URL_BASE } from "../constants/constansts";
 import userData from "../constants/user-storage";
 import { RefreshContext } from "../providers/refresh";
-import CustomModal from "../components/Modal";
-import Modal from "react-modal"
+import CustomModal from "../components/Modal-edit";
+import CreateTransaction from "../components/Modal-create";
+import dayjs from "dayjs";
 
 export default function HomePage() {
  const { refresh, isOpen, setIsOpen } = React.useContext(RefreshContext);
- const [inputMonth, setInputMonth] = useState("");
+ const [inputMonth, setInputMonth] = useState(dayjs().toISOString().substring(0,7));
  const [transactions, setTransactions] = useState([
   {
    id: "",
@@ -24,16 +25,13 @@ export default function HomePage() {
    dateTransaction: "",
   },
  ]);
-
+ const [openCreateTransaction, setIsOpenCreateTransaction] = useState(false);
  const navigate = useNavigate();
  const user = userData();
  const token = user.token;
  const config = {
   headers: { Authorization: `Bearer ${token}` },
  };
-
-
-
  function openModal() {
   setIsOpen(true);
  }
@@ -43,7 +41,7 @@ export default function HomePage() {
  }
  useEffect(() => {
   if (inputMonth.length > 0) {
-   const splited = inputMonth.split("-");
+   const splited = inputMonth?.split("-");
    const month = splited[1];
    const year = splited[0];
 
@@ -65,11 +63,9 @@ export default function HomePage() {
  return (
   <HomeSection>
    <Header />
-   {isOpen ? (<CustomModal
-    isOpen={isOpen}
-    onRequestClose={closeModal}
-   />): null}
-   
+   {isOpen ? <CustomModal isOpen={isOpen} onRequestClose={closeModal} /> : null}
+   {openCreateTransaction ? <CreateTransaction setOpen={setIsOpenCreateTransaction}/> : null}
+
    <div className="transactions">
     <div className="left-side-transactions">
      <TotalValues type="total-income" transactions={transactions} />
@@ -83,8 +79,16 @@ export default function HomePage() {
       transactions={transactions}
      />
      <div className="buttons-transactions">
-      <ButtonsTransactions type="income" />
-      <ButtonsTransactions type="expense" />
+      <ButtonsTransactions
+       type="income"
+       open={openCreateTransaction}
+       setOpen={setIsOpenCreateTransaction}
+      />
+      <ButtonsTransactions
+       type="expense"
+       open={openCreateTransaction}
+       setOpen={setIsOpenCreateTransaction}
+      />
      </div>
     </div>
    </div>

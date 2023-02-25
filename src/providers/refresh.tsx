@@ -21,6 +21,8 @@ const initialValues = {
   dateTransaction: "",
  },
  setTransaction: (arg0: TransactionType) => {},
+ typeTransaction: "",
+ setTypeTransaction: (ar0: string) => {}
 };
 
 export const RefreshContext = React.createContext(initialValues);
@@ -29,6 +31,7 @@ export function RefreshProvider(props: PropsWithChildren) {
  const [refresh, setRefresh] = useState(initialValues.refresh);
  const [isOpen, setIsOpen] = useState(false);
  const [transaction, setTransaction] = useState(initialValues.transaction);
+ const [typeTransaction, setTypeTransaction] = useState(initialValues.typeTransaction)
 
  return (
   <RefreshContext.Provider
@@ -39,6 +42,8 @@ export function RefreshProvider(props: PropsWithChildren) {
     setIsOpen,
     transaction,
     setTransaction,
+    typeTransaction,
+    setTypeTransaction
    }}
   >
    {props.children}

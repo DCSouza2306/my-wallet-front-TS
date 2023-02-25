@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import styled from "styled-components";
 import TransactionsValues from "./Values-transactions";
 
@@ -28,9 +29,7 @@ export default function Transacions(props: Props) {
     <p>Valor</p>
    </div>
    <div className="values-transactions">
-    {props.inputMonth.length === 0 ? (
-     <p>Selecione um mês</p>
-    ) : props.transactions.length === 0 ? (
+    {props.transactions.length === 0 ? (
      <p>Não há lançamentos para esse período</p>
     ) : (
      props.transactions.map((e,i) => (
