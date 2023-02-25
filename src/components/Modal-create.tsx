@@ -158,6 +158,7 @@ const CreateTransactionDiv = styled.div`
     border-radius: 6px;
     background-color: #d199da;
     color: #ffffff;
+    cursor: pointer;
    }
    #value-create {
     width: 200px;

@@ -226,19 +226,20 @@ const ModalDiv = styled.div`
    }
   }
   .edit-save-modal {
-   width: 300px;
+   width: 700px;
    display: flex;
    justify-content: space-evenly;
    button {
-    width: 120px;
-    height: 30px;
-    font-size: 20px;
+    width: 300px;
+    margin: 0 auto;
+    height: 40px;
+    font-size: 24px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     background-color: #d199da;
     color: #ffffff;
-    :hover {
-     cursor: pointer;
+    :hover{
+      cursor: pointer;
     }
    }
   }

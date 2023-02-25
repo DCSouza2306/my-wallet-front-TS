@@ -16,16 +16,26 @@ interface Props {
  };
 }
 
+interface ColorProps {
+ readonly typeColor: string;
+}
+
 export default function TransactionsValues(props: Props) {
- const { setRefresh, refresh, isOpen, setIsOpen, setTransaction } =
-  React.useContext(RefreshContext);
- const { id, value, description, dateTransaction } = props.transaction;
+ const {
+  setRefresh,
+  refresh,
+  isOpen,
+  setIsOpen,
+  setTransaction,
+  typeTransaction,
+ } = React.useContext(RefreshContext);
+ const { id, value, description, dateTransaction, type } = props.transaction;
 
  const user = userData();
 
  function openModal() {
   setIsOpen(true);
-  setTransaction(props.transaction)
+  setTransaction(props.transaction);
  }
  function deleteTransaction() {
   axios
@@ -44,8 +54,10 @@ export default function TransactionsValues(props: Props) {
    });
  }
  return (
-  <ValuesTransactionsDiv>
-   <p className="date">{dateTransaction.substring(0,10)}</p>
+  <ValuesTransactionsDiv
+   typeColor={type === "income" ? "#219A2D" : "#CC141F"}
+  >
+   <p className="date">{dateTransaction.substring(0, 10)}</p>
    <p className="description">{description}</p>
    <p className="value">R$ {value.toFixed(2)}</p>
    <div className="buttons-edit-delete">
@@ -64,7 +76,7 @@ export default function TransactionsValues(props: Props) {
  );
 }
 
-const ValuesTransactionsDiv = styled.div`
+const ValuesTransactionsDiv = styled.div<ColorProps>`
  display: flex;
  margin-bottom: 20px;
  font-size: 18px;
@@ -83,6 +95,7 @@ const ValuesTransactionsDiv = styled.div`
   width: 150px;
   display: flex;
   align-items: flex-start;
+  color: ${(props) => props.typeColor}
  }
  .buttons-edit-delete {
   width: 50px;
