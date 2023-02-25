@@ -1,27 +1,63 @@
-import React, { useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import styled from "styled-components";
+import axios, { AxiosError } from "axios";
+import userData from "../constants/user-storage";
 import { RefreshContext } from "../providers/refresh";
+import { URL_BASE } from "../constants/constansts";
 
 interface Props {
  readonly setOpen: (arg0: boolean) => void;
 }
 
 export default function CreateTransaction(props: Props) {
- const { typeTransaction: type } = React.useContext(RefreshContext);
+ const {
+  typeTransaction: type,
+  setRefresh,
+  refresh,
+ } = React.useContext(RefreshContext);
  const [value, setValue] = useState("");
  const [description, setDescription] = useState("");
  const [dateTransaction, setDateTransaction] = useState("");
  const [enable, setEnable] = useState(false);
+ const user = userData();
 
  function closeCreateModal() {
   props.setOpen(false);
+ }
+
+ function newTransaction(e: SyntheticEvent) {
+  e.preventDefault();
+
+  const newTransaction = {
+   value: parseInt(value),
+   type: type === "Receita" ? "income" : "expense",
+   description,
+   dateTransaction,
+  };
+
+  axios
+   .post(`${URL_BASE}/transactions`, newTransaction, {
+    headers: { Authorization: `Bearer ${user.token}` },
+   })
+   .then((res) => {
+    alert("foi");
+    props.setOpen(false);
+    setRefresh(!refresh);
+   })
+   .catch((e: AxiosError | Error) => {
+    if (axios.isAxiosError(e)) {
+     console.log(e);
+    } else {
+     console.log(e);
+    }
+   });
  }
 
  return (
   <CreateTransactionDiv>
    <div className="create-transaction-modal">
     <h2>Inserir Nova {type}</h2>
-    <form>
+    <form onSubmit={newTransaction}>
      <div>
       <label htmlFor="value">Valor</label>
       <input
@@ -58,10 +94,12 @@ export default function CreateTransaction(props: Props) {
        />
       </div>
      </div>
-     <button type="submit" >Salvar</button>
+     <button type="submit">Salvar</button>
     </form>
 
-    <button onClick={() => closeCreateModal()} className="button-close">Cancelar</button>
+    <button onClick={() => closeCreateModal()} className="button-close">
+     Cancelar
+    </button>
    </div>
   </CreateTransactionDiv>
  );
@@ -89,8 +127,8 @@ const CreateTransactionDiv = styled.div`
   height: 400px;
   border-radius: 50px;
   position: fixed;
-  h2{
-    font-size: 28px;
+  h2 {
+   font-size: 28px;
   }
   form {
    display: flex;
@@ -98,9 +136,9 @@ const CreateTransactionDiv = styled.div`
    justify-content: space-evenly;
    height: 300px;
    width: 600px;
-    label{
-        font-size: 24px;
-    }
+   label {
+    font-size: 24px;
+   }
    input {
     height: 40px;
     font-size: 24px;
@@ -111,7 +149,7 @@ const CreateTransactionDiv = styled.div`
      outline: 0;
     }
    }
-   button{
+   button {
     width: 300px;
     margin: 0 auto;
     height: 40px;
@@ -121,21 +159,21 @@ const CreateTransactionDiv = styled.div`
     background-color: #d199da;
     color: #ffffff;
    }
-   #value-create{
+   #value-create {
     width: 200px;
     margin-left: 20px;
    }
-   #date-create{
+   #date-create {
     margin-left: 26px;
    }
-   #description-create{
+   #description-create {
     margin-left: 26px;
     width: 450px;
    }
   }
 
-  .button-close{
-    font-family: "Raleway";
+  .button-close {
+   font-family: "Raleway";
    width: 100px;
    height: 25px;
    display: flex;
