@@ -13,9 +13,10 @@ import CustomModal from "../components/Modal-edit";
 import CreateTransaction from "../components/Modal-create";
 import dayjs from "dayjs";
 import ScreenGray from "../components/Screen-faded";
+import Settings from "../components/Settings-box";
 
 export default function HomePage() {
- const { refresh, isOpen, setIsOpen, openCreateTransaction } =
+ const { refresh, isOpen, setIsOpen, openCreateTransaction, isOpenSettings } =
   React.useContext(RefreshContext);
  const [inputMonth, setInputMonth] = useState(
   dayjs().toISOString().substring(0, 7)
@@ -61,10 +62,10 @@ export default function HomePage() {
  }, [refresh, inputMonth]);
 
  return (
-  <HomeSection id="home">
-   {isOpen || openCreateTransaction ? <ScreenGray /> : null}
+  <HomeSection>
+   {isOpen || openCreateTransaction || isOpenSettings ? <ScreenGray /> : null}
+   <Settings />
    <Header />
-
    {openCreateTransaction ? <CreateTransaction /> : null}
    {isOpen ? <CustomModal /> : null}
 
