@@ -74,9 +74,11 @@ const TransactionsDiv = styled.div`
  }
  .values-transactions {
   width: 880px;
+  height: 450px;
   border-top: 2px solid #6618b5;
   margin: 0 auto;
   padding-top: 20px;
+  overflow: scroll;
   p {
    font-size: 24px;
    text-align: center;

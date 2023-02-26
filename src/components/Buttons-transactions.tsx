@@ -14,12 +14,15 @@ export default function ButtonsTransactions(props: Props) {
  const arrow =
   props.type === "income" ? "arrow-up-outline" : "arrow-down-outline";
  const user = userData();
- const { setTypeTransaction, setIsOpenCreateTransaction, openCreateTransaction, refresh, setRefresh } = React.useContext(RefreshContext);
+ const {
+  setTypeTransaction,
+  setIsOpenCreateTransaction,
+  openCreateTransaction,
+ } = React.useContext(RefreshContext);
 
  function newTransaction() {
-    setIsOpenCreateTransaction(!openCreateTransaction)
-    setTypeTransaction(type)
-    setRefresh(!refresh)
+  setIsOpenCreateTransaction(!openCreateTransaction);
+  setTypeTransaction(type);
  }
  return (
   <ButtonsDiv onClick={() => newTransaction()}>

@@ -14,10 +14,12 @@ import CreateTransaction from "../components/Modal-create";
 import dayjs from "dayjs";
 import ScreenGray from "../components/Screen-faded";
 import Settings from "../components/Settings-box";
+import User from "../components/Modal-user";
 
 export default function HomePage() {
  const { refresh, isOpen, setIsOpen, openCreateTransaction, isOpenSettings } =
   React.useContext(RefreshContext);
+ const [openUserModal, setOpenUserModal] = useState(false);
  const [inputMonth, setInputMonth] = useState(
   dayjs().toISOString().substring(0, 7)
  );
@@ -63,11 +65,19 @@ export default function HomePage() {
 
  return (
   <HomeSection>
-   {isOpen || openCreateTransaction || isOpenSettings ? <ScreenGray /> : null}
-   <Settings />
+   {isOpen || openCreateTransaction || isOpenSettings || openUserModal ? (
+    <ScreenGray
+     setOpenUserModal={setOpenUserModal}
+    />
+   ) : null}
+   <Settings
+    openUserModal={openUserModal}
+    setOpenUserModal={setOpenUserModal}
+   />
    <Header />
    {openCreateTransaction ? <CreateTransaction /> : null}
    {isOpen ? <CustomModal /> : null}
+   {openUserModal ? <User setOpenUserModal={setOpenUserModal} /> : null}
 
    <div className="transactions">
     <div className="left-side-transactions">

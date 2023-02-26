@@ -8,17 +8,28 @@ interface SettingsProps {
  readonly displaySettings: boolean;
 }
 
-export default function Settings() {
- const { isOpenSettings, setIsOpenSettings } = React.useContext(RefreshContext);
+interface Props {
+   readonly openUserModal: boolean,
+   readonly setOpenUserModal: (arg0: boolean) => void;
+}
+
+export default function Settings(props: Props) {
+ const { isOpenSettings, setIsOpenSettings, refresh, setRefresh } = React.useContext(RefreshContext);
  const navigate = useNavigate()
  function logout(){
     navigate("/");
     setIsOpenSettings(false);
     localStorage.clear()
  }
+
+ function openUserModal(){
+   props.setOpenUserModal(true)
+   setIsOpenSettings(false);
+   setRefresh(!refresh)
+ }
  return (
   <SettingsDiv displaySettings={isOpenSettings}>
-   <div className="settings-div">
+   <div className="settings-div" onClick={() => openUserModal()}>
    <IonIcon name="person-outline"></IonIcon>
     <p>Usuário</p>
    </div>

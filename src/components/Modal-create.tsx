@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import userData from "../constants/user-storage";
 import { RefreshContext } from "../providers/refresh";
 import { URL_BASE } from "../constants/constansts";
+import dayjs from "dayjs";
 
 
 
@@ -25,13 +26,11 @@ setIsOpenCreateTransaction(false);
  }
 
  function newTransaction() {
-
-  setEnable(true)
   const newTransaction = {
    value: parseInt(value),
    type: type === "Receita" ? "income" : "expense",
    description,
-   dateTransaction,
+   dateTransaction: dayjs(dateTransaction).toDate(),
   };
 
   axios
@@ -39,8 +38,6 @@ setIsOpenCreateTransaction(false);
     headers: { Authorization: `Bearer ${user.token}` },
    })
    .then((res) => {
-    setEnable(false)
-    setRefresh(!refresh);
    })
    .catch((e: AxiosError | Error) => {
     if (axios.isAxiosError(e)) {

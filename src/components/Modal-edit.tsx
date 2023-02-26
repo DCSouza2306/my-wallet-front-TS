@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { URL_BASE } from "../constants/constansts";
 import userData from "../constants/user-storage";
+import dayjs from "dayjs";
 
 
 
@@ -40,7 +41,7 @@ export default function CustomModal() {
      value: parseInt(value),
      type,
      description,
-     dateTransaction: date,
+     dateTransaction: dayjs(date).toDate(),
     },
     {
      headers: { Authorization: `Bearer ${user.token}` },

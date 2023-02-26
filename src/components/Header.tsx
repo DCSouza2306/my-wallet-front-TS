@@ -45,13 +45,14 @@ const HeaderDiv = styled.div`
   color: #ffffff;
  }
  .user-settings {
-  width: 200px;
+  width: 230px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   img {
    width: 60px;
    border-radius: 100%;
+   margin-right: 15px;
   }
   .user-settings-name {
    font-size: 18px;

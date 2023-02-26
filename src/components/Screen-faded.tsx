@@ -6,13 +6,18 @@ interface ScreenGrayProps {
     readonly isColored: boolean
 }
 
-export default function ScreenGray() {
+interface Props{
+    readonly setOpenUserModal: (arg: boolean) => void
+}
+
+export default function ScreenGray(props: Props) {
  const { setIsOpen, setIsOpenCreateTransaction, setIsOpenSettings, isOpenSettings } =
   React.useContext(RefreshContext);
  document.getElementById("gray-screen")?.addEventListener("click", function () {
   setIsOpen(false);
   setIsOpenCreateTransaction(false);
   setIsOpenSettings(false);
+  props.setOpenUserModal(false)
  });
 
  return <ScreenDiv id="gray-screen" isColored={isOpenSettings}></ScreenDiv>;

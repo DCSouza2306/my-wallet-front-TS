@@ -4,6 +4,7 @@ export default function userData() {
   name: "",
   url_image: "",
   token: "",
+  email: ""
  };
  if (userStorage) {
   user = JSON.parse(userStorage);
